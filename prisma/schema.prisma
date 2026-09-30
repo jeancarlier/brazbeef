@@ -1,0 +1,63 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Language {
+  code  String    @id
+  name  String
+  names CutName[]
+}
+
+model Region {
+  code  String    @id
+  name  String
+  names CutName[]
+}
+
+model Cut {
+  id        String    @id @default(cuid())
+  slug      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  names     CutName[]
+  hotspots  Hotspot[]
+}
+
+model CutName {
+  id                    String   @id @default(cuid())
+  cutId                 String
+  cut                   Cut      @relation(fields: [cutId], references: [id])
+  languageCode          String
+  language              Language @relation(fields: [languageCode], references: [code])
+  regionCode            String?
+  region                Region?  @relation(fields: [regionCode], references: [code])
+  name                  String
+  normalizedName        String
+  isPrimary             Boolean  @default(true)
+  approximate           Boolean  @default(false)
+  notes                 String?
+  description           String?
+  normalizedDescription String?
+  createdAt             DateTime @default(now())
+
+  @@unique([cutId, languageCode, regionCode, name])
+  @@index([languageCode, normalizedName])
+  @@index([languageCode, normalizedDescription])
+}
+
+model Hotspot {
+  id     String @id @default(cuid())
+  cutId  String
+  cut    Cut    @relation(fields: [cutId], references: [id])
+  shape  String @default("rect")
+  x      Float
+  y      Float
+  width  Float
+  height Float
+
+  @@index([cutId])
+}
