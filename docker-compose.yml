@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: brazbeef
+      POSTGRES_PASSWORD: brazbeef
+      POSTGRES_DB: brazbeef
+    ports:
+      - "5433:5432"
+    volumes:
+      - brazbeef_pgdata:/var/lib/postgresql/data
+
+volumes:
+  brazbeef_pgdata:

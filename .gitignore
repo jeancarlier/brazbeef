@@ -28,9 +28,16 @@ coverage/
 .eslintcache
 .npm
 
+# Next.js
+.next/
+.vercel
+*.tsbuildinfo
+next-env.d.ts
+
 # Editor/OS
 .vscode/
 .idea/
+.claude/
 .DS_Store
 Thumbs.db
 
